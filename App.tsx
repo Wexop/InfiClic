@@ -79,7 +79,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            options={baseHeaderStyle}
+            options={{headerShown: false}}
             name="Home"
             component={HomePage}
           />
