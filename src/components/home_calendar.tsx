@@ -32,6 +32,7 @@ const HomeCalendar = (props: {
         dayTextColor: '#2d4150',
         textDisabledColor: '#c2c2c2',
       }}
+      style={{marginBottom: 10}}
     />
   );
 };
