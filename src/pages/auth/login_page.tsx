@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../App.tsx';
-import {Image, View} from 'react-native';
+import {Alert, Image, View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {useState} from 'react';
 import axios from 'axios';
@@ -21,13 +21,14 @@ const LoginPage = (props: Props) => {
 
   const onLogin = async () => {
     setIsLoading(true);
-    const response = await axios.post<LoginResponse>(
-      `${API_URL}/user/loginToken`,
-      {
+    const response = await axios
+      .post<LoginResponse>(`${API_URL}/user/loginToken`, {
         username: login,
         password,
-      },
-    );
+      })
+      .catch(() => {
+        Alert.alert('Erreur', 'Email ou mot de passe invalide');
+      });
 
     const token = response?.data?.token;
 
@@ -66,7 +67,7 @@ const LoginPage = (props: Props) => {
         right={
           <TextInput.Icon
             onPress={() => setShowPassword(!showPassword)}
-            icon={showPassword ? 'eye-with-line' : 'eye'}
+            icon={showPassword ? 'eye-off' : 'eye'}
           />
         }
       />
