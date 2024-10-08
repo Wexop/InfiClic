@@ -1,5 +1,9 @@
 import React from 'react';
-import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
+import {
+  MD3LightTheme as DefaultTheme,
+  PaperProvider,
+  useTheme,
+} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
 import HomePage from './src/pages/home/home.tsx';
 import {
@@ -11,6 +15,7 @@ import LoginPage from './src/pages/auth/login_page.tsx';
 import {Provider} from 'react-redux';
 import {useAppSelector} from './src/store/redux_hook.ts';
 import {store} from './src/store/store.ts';
+import HeaderLogoutButton from './src/components/logout_button_header.tsx';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -85,8 +90,13 @@ function App() {
 }
 
 const MainApp = () => {
+  const theme = useTheme();
   const baseHeaderStyle: NativeStackNavigationOptions = {
-    headerTitleAlign: 'center',
+    title: '',
+    headerStyle: {
+      backgroundColor: theme.colors.primary,
+    },
+    headerRight: () => <HeaderLogoutButton />,
   };
 
   const userToken = useAppSelector(state => state.auth.token);
@@ -95,7 +105,7 @@ const MainApp = () => {
       <Stack.Navigator>
         {userToken && (
           <Stack.Screen
-            options={{headerShown: false}}
+            options={baseHeaderStyle}
             name="Home"
             component={HomePage}
           />

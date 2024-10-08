@@ -1,8 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../App.tsx';
-import {View} from 'react-native';
+import {Image, View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {useState} from 'react';
+import axios from 'axios';
+import {API_URL} from '../../axios/axios.ts';
+import {LoginResponse} from '../../type/api.type.ts';
+import {useAppDispatch} from '../../store/redux_hook.ts';
+import {updateToken} from '../../store/slice.ts';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -10,6 +15,28 @@ const LoginPage = (props: Props) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const onLogin = async () => {
+    setIsLoading(true);
+    const response = await axios.post<LoginResponse>(
+      `${API_URL}/user/loginToken`,
+      {
+        username: login,
+        password,
+      },
+    );
+
+    const token = response?.data?.token;
+
+    setIsLoading(false);
+
+    if (token) {
+      dispatch(updateToken(token));
+    }
+  };
 
   const theme = useTheme();
 
@@ -19,7 +46,12 @@ const LoginPage = (props: Props) => {
         style={{fontSize: 24, color: theme.colors.primary, fontWeight: 'bold'}}>
         Bienvenue
       </Text>
+      <Image
+        style={{width: 50, height: 50, alignSelf: 'center', marginTop: 25}}
+        source={{uri: 'logo'}}
+      />
       <TextInput
+        style={{marginTop: 25}}
         mode={'outlined'}
         value={login}
         label={'Email'}
@@ -34,12 +66,21 @@ const LoginPage = (props: Props) => {
         right={
           <TextInput.Icon
             onPress={() => setShowPassword(!showPassword)}
-            icon="eye"
+            icon={showPassword ? 'eye-with-line' : 'eye'}
           />
         }
       />
-      <Button mode={'contained'} style={{marginTop: 75}}>
+      <Button
+        disabled={!login || !password || isLoading}
+        mode={'contained'}
+        loading={isLoading}
+        onPress={onLogin}
+        style={{marginTop: 75}}>
         Se connecter
+      </Button>
+
+      <Button mode={'text'} style={{marginTop: 30}}>
+        Pas de compte ? Inscris toi
       </Button>
     </View>
   );
