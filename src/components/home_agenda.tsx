@@ -1,7 +1,12 @@
-import {Agenda, AgendaEntry} from 'react-native-calendars';
-import {timeToString} from '../utils/utils.ts';
+import {
+  AgendaEntry,
+  CalendarProvider,
+  ExpandableCalendar,
+  TimelineList,
+} from 'react-native-calendars';
 import {Alert, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-paper';
+import {dateToCalendarFormat} from '../utils/utils.ts';
 
 const HomeAgenda = (props: {date: Date}) => {
   const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
@@ -17,14 +22,20 @@ const HomeAgenda = (props: {date: Date}) => {
     );
   };
   return (
-    <Agenda
-      renderItem={renderItem}
-      items={{
-        [timeToString(props.date)]: [
-          {name: 'test', height: 200, day: timeToString(props.date)},
-        ],
-      }}
-    />
+    <CalendarProvider
+      date={dateToCalendarFormat(props.date)}
+      showTodayButton
+      disabledOpacity={0.6}
+      // numberOfDays={3}
+    >
+      <ExpandableCalendar firstDay={1} />
+      <TimelineList
+        events={{}}
+        showNowIndicator
+        // scrollToNow
+        scrollToFirst
+      />
+    </CalendarProvider>
   );
 };
 
