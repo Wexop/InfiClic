@@ -7,9 +7,14 @@ import {
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 import {LocaleConfig} from 'react-native-calendars/src';
+import LoginPage from './src/pages/auth/login_page.tsx';
+import {Provider} from 'react-redux';
+import {useAppSelector} from './src/store/redux_hook.ts';
+import {store} from './src/store/store.ts';
 
 export type RootStackParamList = {
   Home: undefined;
+  Login: undefined;
 };
 
 const theme = {
@@ -70,23 +75,41 @@ LocaleConfig.defaultLocale = 'fr';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
+  return (
+    <PaperProvider theme={theme}>
+      <Provider store={store}>
+        <MainApp />
+      </Provider>
+    </PaperProvider>
+  );
+}
+
+const MainApp = () => {
   const baseHeaderStyle: NativeStackNavigationOptions = {
     headerTitleAlign: 'center',
   };
 
+  const userToken = useAppSelector(state => state.auth.token);
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {userToken && (
           <Stack.Screen
             options={{headerShown: false}}
             name="Home"
             component={HomePage}
           />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+        )}
+        {!userToken && (
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Login"
+            component={LoginPage}
+          />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
 export default App;
