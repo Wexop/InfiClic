@@ -3,7 +3,7 @@ import {RootStackParamList} from '../../../App.tsx';
 import {Alert, FlatList, ScrollView, View} from 'react-native';
 import {Button, Card, Text, TextInput, useTheme} from 'react-native-paper';
 import {useEffect, useState} from 'react';
-import {Address, OpenStreeMapResponse, Patient} from '../../type/api.type.ts';
+import {Address, OpenStreeMapResponse} from '../../type/api.type.ts';
 import axios from 'axios';
 import useDebounce from '../../hooks/userdebounce.ts';
 import apiClient from '../../axios/axios.ts';
@@ -24,17 +24,9 @@ const AddPatientPage = (props: Props) => {
 
   const debouncedSearchTerm = useDebounce(addressSearch, 500); // Délais de 500ms
 
-
-
   const postPatient = async () => {
     setIsLoading(true);
-    console.log({
-        firstName,
-        lastName,
-        note,
-        phoneNumber: phone,
-        ...address,
-    })
+
     await apiClient
       .post('/patient/create', {
         firstName,
@@ -44,19 +36,20 @@ const AddPatientPage = (props: Props) => {
         ...address,
       })
       .catch(e => {
-
-          Alert.alert('Erreur');
+        Alert.alert('Erreur');
       });
     setIsLoading(false);
     props.navigation.goBack();
   };
 
   const getAdressResults = async () => {
-    const response = await axios.get<OpenStreeMapResponse[]>(
-      `https://nominatim.openstreetmap.org/search?q=${addressSearch}&format=json&addressdetails=1&limit=5`,
-    ).catch(e => console.log(e));
+    const response = await axios
+      .get<OpenStreeMapResponse[]>(
+        `https://nominatim.openstreetmap.org/search?q=${addressSearch}&format=json&addressdetails=1&limit=5`,
+      )
+      .catch(e => console.log(e));
 
-      response?.data && setAddressResults(response.data);
+    response?.data && setAddressResults(response.data);
   };
 
   useEffect(() => {
