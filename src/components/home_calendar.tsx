@@ -1,21 +1,34 @@
 import {Calendar} from 'react-native-calendars';
 import {useTheme} from 'react-native-paper';
 import {dateToCalendarFormat} from '../utils/utils.ts';
+import {AllAppointment} from '../type/api.type.ts';
 
 const HomeCalendar = (props: {
   date: Date;
   onChangeDate: (date: Date) => void;
+  everyAppointments?: AllAppointment[];
 }) => {
   const theme = useTheme();
+
+  const allAppointments: any = {};
+
+  props.everyAppointments?.forEach(a => {
+    allAppointments[dateToCalendarFormat(new Date(a.startDate))] = {
+      marked: true,
+    };
+  });
 
   return (
     <Calendar
       markedDates={{
+        ...allAppointments,
         [dateToCalendarFormat(props.date)]: {
           selected: true,
           disableTouchEvent: true,
           selectedColor: theme.colors.primary,
           selectedTextColor: '#ffffff',
+          marked:
+            allAppointments[dateToCalendarFormat(props.date)]?.marked || false,
         },
       }}
       onDayPress={date => {

@@ -5,7 +5,7 @@ import HomeCalendar from '../../components/home_calendar.tsx';
 import {useEffect, useState} from 'react';
 import AgendaItem from '../../components/agenda_item.tsx';
 import {Button, Text, useTheme} from 'react-native-paper';
-import {Appointment} from '../../type/api.type';
+import {AllAppointment, Appointment} from '../../type/api.type';
 import apiClient from '../../axios/axios.ts';
 import {format} from 'date-fns';
 
@@ -17,6 +17,11 @@ const HomePage = (props: Props) => {
   const [appointments, setAppointments] = useState<Appointment[] | undefined>(
     undefined,
   );
+
+  const [everyAppointments, setEveryAppointments] = useState<
+    AllAppointment[] | undefined
+  >(undefined);
+
   const [loading, setLoading] = useState(false);
 
   props.navigation.setOptions({
@@ -41,13 +46,34 @@ const HomePage = (props: Props) => {
     setLoading(false);
   };
 
+  const getEveryAppointments = async () => {
+    setLoading(true);
+    setEveryAppointments(undefined);
+    const response = await apiClient.get<AllAppointment[]>(
+      'appointment/AllMyAppointments',
+    );
+
+    console.log(response.data);
+    setEveryAppointments(response.data);
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getEveryAppointments();
+  }, []);
+
   useEffect(() => {
     onChangeDate();
   }, [date]);
 
   return (
     <View style={{height: '100%'}}>
-      <HomeCalendar onChangeDate={setDate} date={date} />
+      <HomeCalendar
+        everyAppointments={everyAppointments}
+        onChangeDate={setDate}
+        date={date}
+      />
       {loading && <ActivityIndicator size={30} />}
       {!appointments?.length && !loading && (
         <Text style={{padding: 20}}>Pas de rendez-vous à ce jour.</Text>

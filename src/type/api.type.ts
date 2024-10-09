@@ -3,7 +3,7 @@ export type LoginResponse = {
 };
 
 export type Patient = Address & {
-  id?: number
+  id?: number;
   firstName: string;
   lastName: string;
   note?: string;
@@ -34,9 +34,17 @@ export type OpenStreeMapResponse = {
 };
 
 export type Appointment = {
-  patient: Patient
-  title: string
-  startDate: number
-  endDate: number
-  note: number
-}
+  patient: Patient;
+  title: string;
+  startDate: number;
+  endDate: number;
+  note: number;
+};
+
+export type AllAppointment = {
+  patientId: number;
+  title: string;
+  startDate: number;
+  endDate: number;
+  note: number;
+};
