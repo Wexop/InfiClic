@@ -5,6 +5,15 @@ import {format} from 'date-fns';
 
 const AgendaItem = (props: {data: Appointment; onPress?: () => void}) => {
   const theme = useTheme();
+
+  const subtext = `${format(new Date(props.data.startDate), 'hh')}h${format(
+    new Date(props.data.startDate),
+    'mm',
+  )} - ${format(new Date(props.data.endDate), 'hh')}h${format(
+    new Date(props.data.endDate),
+    'mm',
+  )}`;
+
   return (
     <View
       style={{
@@ -31,7 +40,10 @@ const AgendaItem = (props: {data: Appointment; onPress?: () => void}) => {
           width: '80%',
           alignSelf: 'flex-end',
         }}>
-        <Card.Title title={props.data.title} />
+        <Card.Title title={props.data.title} titleStyle={{fontSize: 18}} />
+        <Card.Content>
+          <Text style={{color: '#FFF'}}>{subtext}</Text>
+        </Card.Content>
       </Card>
     </View>
   );

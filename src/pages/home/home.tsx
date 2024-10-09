@@ -46,7 +46,7 @@ const HomePage = (props: Props) => {
       <HomeCalendar onChangeDate={setDate} date={date} />
       {loading && <ActivityIndicator size={30} />}
       {!appointments?.length && !loading && (
-        <Text>Pas de rendez vous à ce jour</Text>
+        <Text style={{padding: 20}}>Pas de rendez-vous à ce jour.</Text>
       )}
       <FlatList
         data={appointments}
