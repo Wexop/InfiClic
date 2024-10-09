@@ -6,10 +6,10 @@ import {format} from 'date-fns';
 const AgendaItem = (props: {data: Appointment; onPress?: () => void}) => {
   const theme = useTheme();
 
-  const subtext = `${format(new Date(props.data.startDate), 'hh')}h${format(
+  const subtext = `${format(new Date(props.data.startDate), 'HH')}h${format(
     new Date(props.data.startDate),
     'mm',
-  )} - ${format(new Date(props.data.endDate), 'hh')}h${format(
+  )} - ${format(new Date(props.data.endDate), 'HH')}h${format(
     new Date(props.data.endDate),
     'mm',
   )}`;
@@ -26,7 +26,7 @@ const AgendaItem = (props: {data: Appointment; onPress?: () => void}) => {
           justifyContent: 'center',
         }}>
         <Text style={{color: theme.colors.backdrop}}>
-          {format(new Date(props.data.startDate), 'hh:mm')}
+          {format(new Date(props.data.startDate), 'HH:mm')}
         </Text>
         <Divider
           bold

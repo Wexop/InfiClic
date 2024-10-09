@@ -48,12 +48,16 @@ const HomePage = (props: Props) => {
       {!appointments?.length && !loading && (
         <Text style={{padding: 20}}>Pas de rendez-vous à ce jour.</Text>
       )}
-      <FlatList
-        data={appointments}
-        renderItem={({item}) => {
-          return <AgendaItem data={item} />;
-        }}
-      />
+      <View style={{height: '45%'}}>
+        <FlatList
+          showsVerticalScrollIndicator
+          persistentScrollbar
+          data={appointments}
+          renderItem={({item}) => {
+            return <AgendaItem data={item} />;
+          }}
+        />
+      </View>
 
       <View
         style={{
