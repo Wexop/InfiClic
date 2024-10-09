@@ -4,7 +4,7 @@ import {RootStackParamList} from '../../../App.tsx';
 import HomeCalendar from '../../components/home_calendar.tsx';
 import {useState} from 'react';
 import AgendaItem from '../../components/agenda_item.tsx';
-import {IconButton, useTheme} from 'react-native-paper';
+import {Button, useTheme} from 'react-native-paper';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -20,18 +20,25 @@ const HomePage = (props: Props) => {
     <View style={{height: '100%'}}>
       <HomeCalendar onChangeDate={onChangeDate} date={date} />
       <AgendaItem name={'Test'} />
-      <IconButton
+      <View
         style={{
-          backgroundColor: theme.colors.primary,
           position: 'absolute',
           alignSelf: 'center',
           bottom: 10,
-        }}
-        iconColor={'#fff'}
-        mode={'contained'}
-        icon={'plus'}
-        size={40}
-      />
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '55%',
+        }}>
+        <Button
+          onPress={() => props.navigation.navigate('AddPatient')}
+          mode={'contained'}
+          icon={'plus'}>
+          Patient
+        </Button>
+        <Button mode={'contained'} icon={'plus'}>
+          RDV
+        </Button>
+      </View>
     </View>
   );
 };

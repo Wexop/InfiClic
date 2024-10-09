@@ -16,10 +16,12 @@ import {Provider} from 'react-redux';
 import {useAppSelector} from './src/store/redux_hook.ts';
 import {store} from './src/store/store.ts';
 import HeaderLogoutButton from './src/components/logout_button_header.tsx';
+import AddPatientPage from './src/pages/patient/add_patient_page.tsx';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
+  AddPatient: undefined;
 };
 
 const theme = {
@@ -104,11 +106,18 @@ const MainApp = () => {
     <NavigationContainer>
       <Stack.Navigator>
         {userToken && (
-          <Stack.Screen
-            options={baseHeaderStyle}
-            name="Home"
-            component={HomePage}
-          />
+          <>
+            <Stack.Screen
+              options={baseHeaderStyle}
+              name="Home"
+              component={HomePage}
+            />
+            <Stack.Screen
+              options={baseHeaderStyle}
+              name="AddPatient"
+              component={AddPatientPage}
+            />
+          </>
         )}
         {!userToken && (
           <Stack.Screen
