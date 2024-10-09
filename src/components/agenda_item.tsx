@@ -35,6 +35,7 @@ const AgendaItem = (props: {data: Appointment; onPress?: () => void}) => {
       </View>
 
       <Card
+        onPress={props.onPress}
         style={{
           backgroundColor: theme.colors.primary,
           width: '80%',

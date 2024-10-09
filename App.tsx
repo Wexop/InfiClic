@@ -18,8 +18,9 @@ import {store} from './src/store/store.ts';
 import HeaderLogoutButton from './src/components/logout_button_header.tsx';
 import AddPatientPage from './src/pages/patient/add_patient_page.tsx';
 import AddAppointmentPage from './src/pages/appointment/add_appointment_page.tsx';
-import {Patient} from './src/type/api.type.ts';
+import {Appointment, Patient} from './src/type/api.type.ts';
 import SelectPatientPage from './src/pages/patient/select_patient_page.tsx';
+import AppointmentDetailPage from './src/pages/appointment/appointment_detail_page.tsx';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -27,6 +28,7 @@ export type RootStackParamList = {
   AddPatient: undefined;
   AddAppointment: {date?: Date} | undefined;
   SelectPatient: {onSelect: (patient: Patient) => void};
+  AppointmentDetail: {appointment: Appointment};
 };
 
 const theme = {
@@ -131,6 +133,11 @@ const MainApp = () => {
               options={baseHeaderStyle}
               name="SelectPatient"
               component={SelectPatientPage}
+            />
+            <Stack.Screen
+              options={baseHeaderStyle}
+              name="AppointmentDetail"
+              component={AppointmentDetailPage}
             />
           </>
         )}

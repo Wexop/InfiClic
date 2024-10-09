@@ -19,6 +19,10 @@ const HomePage = (props: Props) => {
   );
   const [loading, setLoading] = useState(false);
 
+  props.navigation.setOptions({
+    headerLeft: () => <></>,
+  });
+
   const onChangeDate = async () => {
     setLoading(true);
     setAppointments(undefined);
@@ -54,7 +58,16 @@ const HomePage = (props: Props) => {
           persistentScrollbar
           data={appointments}
           renderItem={({item}) => {
-            return <AgendaItem data={item} />;
+            return (
+              <AgendaItem
+                data={item}
+                onPress={() =>
+                  props.navigation.navigate('AppointmentDetail', {
+                    appointment: item,
+                  })
+                }
+              />
+            );
           }}
         />
       </View>
