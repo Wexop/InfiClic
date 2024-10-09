@@ -24,6 +24,8 @@ const AddPatientPage = (props: Props) => {
 
   const debouncedSearchTerm = useDebounce(addressSearch, 500); // Délais de 500ms
 
+
+
   const postPatient = async () => {
     setIsLoading(true);
     console.log({
@@ -42,7 +44,7 @@ const AddPatientPage = (props: Props) => {
         ...address,
       })
       .catch(e => {
-          
+
           Alert.alert('Erreur');
       });
     setIsLoading(false);
@@ -52,8 +54,9 @@ const AddPatientPage = (props: Props) => {
   const getAdressResults = async () => {
     const response = await axios.get<OpenStreeMapResponse[]>(
       `https://nominatim.openstreetmap.org/search?q=${addressSearch}&format=json&addressdetails=1&limit=5`,
-    );
-    setAddressResults(response.data);
+    ).catch(e => console.log(e));
+
+      response?.data && setAddressResults(response.data);
   };
 
   useEffect(() => {
