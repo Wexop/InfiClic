@@ -22,12 +22,14 @@ import {Appointment, Patient} from './src/type/api.type.ts';
 import SelectPatientPage from './src/pages/patient/select_patient_page.tsx';
 import AppointmentDetailPage from './src/pages/appointment/appointment_detail_page.tsx';
 import RegisterPage from './src/pages/auth/register_page.tsx';
+import ProfilPage from './src/pages/profil/profil_page.tsx';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Register: undefined;
   AddPatient: undefined;
+  Profil: undefined;
   AddAppointment: {date?: Date} | undefined;
   SelectPatient: {onSelect: (patient: Patient) => void};
   AppointmentDetail: {appointment: Appointment};
@@ -140,6 +142,11 @@ const MainApp = () => {
               options={baseHeaderStyle}
               name="AppointmentDetail"
               component={AppointmentDetailPage}
+            />
+            <Stack.Screen
+              options={baseHeaderStyle}
+              name="Profil"
+              component={ProfilPage}
             />
           </>
         )}

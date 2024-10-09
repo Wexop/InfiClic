@@ -48,3 +48,11 @@ export type AllAppointment = {
   endDate: number;
   note: number;
 };
+
+export type Profil = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  profession: string;
+  email: string;
+};

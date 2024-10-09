@@ -26,7 +26,8 @@ const LoginPage = (props: Props) => {
         email: login,
         password,
       })
-      .catch(() => {
+      .catch(e => {
+        console.log(e);
         Alert.alert('Erreur', 'Email ou mot de passe invalide');
       });
 

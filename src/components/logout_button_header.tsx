@@ -1,18 +1,19 @@
-import {useAppDispatch} from '../store/redux_hook.ts';
-import {Button} from 'react-native-paper';
-import {updateToken} from '../store/slice.ts';
+import {IconButton} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../App.tsx';
+// @ts-ignore
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const HeaderLogoutButton = () => {
-  const dispatch = useAppDispatch();
-
-  const logout = () => {
-    dispatch(updateToken(undefined));
-  };
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
-    <Button onPress={logout} textColor={'#fff'}>
-      Se déconnecter
-    </Button>
+    <IconButton
+      icon={() => <Icon name="settings" size={30} color="#fff" />}
+      onPress={() => navigation.navigate('Profil')}
+    />
   );
 };
 
