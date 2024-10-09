@@ -11,10 +11,10 @@ import apiClient from '../../axios/axios.ts';
 type Props = NativeStackScreenProps<RootStackParamList, 'AddPatient'>;
 
 const AddPatientPage = (props: Props) => {
-  const [firstname, setFirsname] = useState('');
-  const [lastname, setlastname] = useState('');
-  const [note, setNote] = useState('');
-  const [phone, setPhone] = useState('');
+  const [firstName, setFirsname] = useState('');
+  const [lastName, setlastname] = useState('');
+  const [note, setNote] = useState<string | null>(null);
+  const [phone, setPhone] = useState<string | null>(null);
   const [address, setAddress] = useState<Address | undefined>(undefined);
   const [addressSearch, setAddressSearch] = useState('');
   const [addressResults, setAddressResults] = useState<OpenStreeMapResponse[]>(
@@ -26,16 +26,23 @@ const AddPatientPage = (props: Props) => {
 
   const postPatient = async () => {
     setIsLoading(true);
-    await apiClient
-      .post('/patient/create', {
-        firstname,
-        lastname,
+    console.log({
+        firstName,
+        lastName,
         note,
         phoneNumber: phone,
         ...address,
-      } as Patient)
+    })
+    await apiClient
+      .post('/patient/create', {
+        firstName,
+        lastName,
+        note,
+        phoneNumber: phone,
+        ...address,
+      })
       .catch(e => {
-          console.log(e);
+          
           Alert.alert('Erreur');
       });
     setIsLoading(false);
@@ -70,7 +77,7 @@ const AddPatientPage = (props: Props) => {
         }}>
         <TextInput
           mode={'outlined'}
-          value={firstname}
+          value={firstName}
           label={'Prénom'}
           onChangeText={setFirsname}
           style={{width: '45%'}}
@@ -78,20 +85,20 @@ const AddPatientPage = (props: Props) => {
         <TextInput
           style={{width: '45%'}}
           mode={'outlined'}
-          value={lastname}
+          value={lastName}
           label={'Nom'}
           onChangeText={setlastname}
         />
       </View>
       <TextInput
         mode={'outlined'}
-        value={phone}
+        value={phone ?? undefined}
         label={'Téléphone'}
         onChangeText={setPhone}
       />
       <TextInput
         mode={'outlined'}
-        value={note}
+        value={note ?? undefined}
         label={'Note'}
         onChangeText={setNote}
         multiline
@@ -160,7 +167,7 @@ const AddPatientPage = (props: Props) => {
         </>
       )}
       <Button
-        disabled={!firstname || !lastname || isLoading}
+        disabled={!firstName || !lastName || isLoading}
         mode={'contained'}
         loading={isLoading}
         onPress={postPatient}

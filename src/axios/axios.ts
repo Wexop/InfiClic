@@ -1,5 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
-import {useAppSelector} from '../store/redux_hook.ts';
+import {store} from '../store/store';
 
 export const API_URL = 'https://inficlic.onrender.com/api';
 
@@ -12,9 +12,10 @@ const apiClient: AxiosInstance = axios.create({
 });
 
 apiClient.interceptors.request.use(request => {
-  const token = useAppSelector(state => state.auth.token);
+  const state = store.getState();
+  const token = state.auth.token;
 
-  request.headers.Authorization = token;
+  request.headers.Authorization = `Bearer ${token}`;
 
   return request;
 });

@@ -3,8 +3,8 @@ export type LoginResponse = {
 };
 
 export type Patient = Address & {
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   note?: string;
   phoneNumber?: string;
 };
