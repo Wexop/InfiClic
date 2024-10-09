@@ -41,7 +41,11 @@ const AgendaItem = (props: {data: Appointment; onPress?: () => void}) => {
           width: '80%',
           alignSelf: 'flex-end',
         }}>
-        <Card.Title title={props.data.title} titleStyle={{fontSize: 18}} />
+        <Card.Title
+          subtitle={`${props.data.patient.firstName} ${props.data.patient.lastName}`}
+          title={props.data.title}
+          titleStyle={{fontSize: 18}}
+        />
         <Card.Content>
           <Text style={{color: '#FFF'}}>{subtext}</Text>
         </Card.Content>

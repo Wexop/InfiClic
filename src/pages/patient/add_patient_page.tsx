@@ -2,7 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../App.tsx';
 import {Alert, FlatList, ScrollView, View} from 'react-native';
 import {Button, Card, Text, TextInput, useTheme} from 'react-native-paper';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Address, OpenStreeMapResponse} from '../../type/api.type.ts';
 import axios from 'axios';
 import useDebounce from '../../hooks/userdebounce.ts';
@@ -42,24 +42,22 @@ const AddPatientPage = (props: Props) => {
     props.navigation.goBack();
   };
 
-  const getAdressResults = useCallback(async () => {
+  const getAdressResults = async () => {
     console.log('CALL');
     const response = await axios
       .get<OpenStreeMapResponse[]>(
         `https://nominatim.openstreetmap.org/search?q=${addressSearch}&format=json&addressdetails=1&limit=5`,
       )
-      .catch(e => console.log(e));
-
-    console.log(response);
+      .catch(e => console.log('ERREUR', e));
 
     response?.data && setAddressResults(response.data);
-  }, [addressSearch]);
+  };
 
   useEffect(() => {
     if (debouncedSearchTerm) {
       getAdressResults();
     }
-  }, [debouncedSearchTerm, getAdressResults]);
+  }, [debouncedSearchTerm]);
 
   const theme = useTheme();
   return (
@@ -128,7 +126,7 @@ const AddPatientPage = (props: Props) => {
           <TextInput
             mode={'outlined'}
             value={addressSearch}
-            label={'Address'}
+            label={'Adresse'}
             onChangeText={setAddressSearch}
           />
           {addressResults && (

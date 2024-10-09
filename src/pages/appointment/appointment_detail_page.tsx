@@ -1,8 +1,9 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../App.tsx';
-import {View} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {Linking, Platform, ScrollView, View} from 'react-native';
+import {Button, Text, useTheme} from 'react-native-paper';
 import {format} from 'date-fns';
+import {LeafletView} from 'react-native-leaflet-view';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AppointmentDetail'>;
 
@@ -10,8 +11,31 @@ const AppointmentDetailPage = (props: Props) => {
   const theme = useTheme();
   const appointment = props.route.params.appointment;
   const patient = appointment.patient;
+
+  const latlng = {
+    lat: patient.latitude,
+    lng: patient.longitude,
+  };
+
+  const openItinary = () => {
+    const scheme = Platform.select({
+      ios: 'maps://0,0?q=',
+      android: 'geo:0,0?q=',
+    });
+    const latLng = `${patient.latitude},${patient.longitude}`;
+    const label = `${patient.firstName} place`;
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`,
+    });
+
+    if (typeof url === 'string') {
+      Linking.openURL(url);
+    }
+  };
+
   return (
-    <View style={{padding: 20}}>
+    <ScrollView style={{padding: 20}}>
       <Text
         style={{fontSize: 24, color: theme.colors.primary, fontWeight: 'bold'}}>
         {appointment.title} ( {format(new Date(appointment.startDate), 'HH:mm')}{' '}
@@ -35,7 +59,30 @@ const AppointmentDetailPage = (props: Props) => {
         </Text>
         <Text style={{fontSize: 16, color: '#000'}}>{patient.note}</Text>
       </View>
-    </View>
+      {patient.longitude && patient.latitude && (
+        <>
+          <View style={{height: '60%'}}>
+            <LeafletView
+              mapCenterPosition={latlng}
+              doDebug={false}
+              mapMarkers={[
+                {
+                  position: latlng,
+                  icon: '📍',
+                  size: [32, 32],
+                },
+              ]}
+            />
+          </View>
+          <Button
+            style={{marginTop: 20}}
+            mode={'contained'}
+            onPress={openItinary}>
+            Itinéraire
+          </Button>
+        </>
+      )}
+    </ScrollView>
   );
 };
 

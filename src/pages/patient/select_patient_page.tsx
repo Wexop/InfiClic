@@ -25,7 +25,7 @@ const SelectPatientPage = (props: Props) => {
     const response = await apiClient
       .get<Patient[]>('/patient/MyPatients')
       .catch(e => console.log(e));
-    console.log(response?.data);
+
     setPatientList(response?.data);
 
     setLoading(false);
