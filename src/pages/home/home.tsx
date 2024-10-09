@@ -70,7 +70,10 @@ const HomePage = (props: Props) => {
           icon={'plus'}>
           Patient
         </Button>
-        <Button mode={'contained'} icon={'plus'}>
+        <Button
+          mode={'contained'}
+          icon={'plus'}
+          onPress={() => props.navigation.navigate('AddAppointment', {date})}>
           RDV
         </Button>
       </View>

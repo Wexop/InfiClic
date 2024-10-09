@@ -17,11 +17,16 @@ import {useAppSelector} from './src/store/redux_hook.ts';
 import {store} from './src/store/store.ts';
 import HeaderLogoutButton from './src/components/logout_button_header.tsx';
 import AddPatientPage from './src/pages/patient/add_patient_page.tsx';
+import AddAppointmentPage from './src/pages/appointment/add_appointment_page.tsx';
+import {Patient} from './src/type/api.type.ts';
+import SelectPatientPage from './src/pages/patient/select_patient_page.tsx';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   AddPatient: undefined;
+  AddAppointment: {date?: Date} | undefined;
+  SelectPatient: {onSelect: (patient: Patient) => void};
 };
 
 const theme = {
@@ -116,6 +121,16 @@ const MainApp = () => {
               options={baseHeaderStyle}
               name="AddPatient"
               component={AddPatientPage}
+            />
+            <Stack.Screen
+              options={baseHeaderStyle}
+              name="AddAppointment"
+              component={AddAppointmentPage}
+            />
+            <Stack.Screen
+              options={baseHeaderStyle}
+              name="SelectPatient"
+              component={SelectPatientPage}
             />
           </>
         )}

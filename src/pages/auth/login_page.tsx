@@ -23,7 +23,7 @@ const LoginPage = (props: Props) => {
     setIsLoading(true);
     const response = await axios
       .post<LoginResponse>(`${API_URL}/user/loginToken`, {
-        username: login,
+        email: login,
         password,
       })
       .catch(() => {
