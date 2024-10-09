@@ -35,7 +35,8 @@ const AddPatientPage = (props: Props) => {
         ...address,
       } as Patient)
       .catch(e => {
-        Alert.alert('Erreur');
+          console.log(e);
+          Alert.alert('Erreur');
       });
     setIsLoading(false);
     props.navigation.goBack();

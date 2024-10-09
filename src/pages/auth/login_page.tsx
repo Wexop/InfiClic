@@ -48,7 +48,7 @@ const LoginPage = (props: Props) => {
         Bienvenue
       </Text>
       <Image
-        style={{width: 50, height: 50, alignSelf: 'center', marginTop: 25}}
+        style={{width: 75, height: 75, alignSelf: 'center', marginTop: 25}}
         source={{uri: 'logo'}}
       />
       <TextInput
