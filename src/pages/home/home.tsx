@@ -1,25 +1,60 @@
-import {View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../App.tsx';
 import HomeCalendar from '../../components/home_calendar.tsx';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import AgendaItem from '../../components/agenda_item.tsx';
-import {Button, useTheme} from 'react-native-paper';
+import {Button, Text, useTheme} from 'react-native-paper';
+import {Appointment} from '../../type/api.type';
+import apiClient from '../../axios/axios.ts';
+import {format} from 'date-fns';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomePage = (props: Props) => {
   const theme = useTheme();
   const [date, setDate] = useState(new Date());
+  const [appointments, setAppointments] = useState<Appointment[] | undefined>(
+    undefined,
+  );
+  const [loading, setLoading] = useState(false);
 
-  const onChangeDate = (date: Date) => {
-    setDate(date);
+  const onChangeDate = async () => {
+    setLoading(true);
+    setAppointments(undefined);
+    const response = await apiClient.get<Appointment[]>(
+      'appointment/AppointmentPerDate',
+      {
+        params: {
+          date: format(date, 'yyyy-MM-dd') + 'T00:00',
+        },
+      },
+    );
+
+    console.log(response.data);
+    setAppointments(response.data);
+
+    setLoading(false);
   };
+
+  useEffect(() => {
+    onChangeDate();
+  }, [date]);
 
   return (
     <View style={{height: '100%'}}>
-      <HomeCalendar onChangeDate={onChangeDate} date={date} />
-      <AgendaItem name={'Test'} />
+      <HomeCalendar onChangeDate={setDate} date={date} />
+      {loading && <ActivityIndicator size={30} />}
+      {!appointments?.length && !loading && (
+        <Text>Pas de rendez vous à ce jour</Text>
+      )}
+      <FlatList
+        data={appointments}
+        renderItem={({item}) => {
+          return <AgendaItem data={item} />;
+        }}
+      />
+
       <View
         style={{
           position: 'absolute',

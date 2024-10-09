@@ -1,7 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
 import {store} from '../store/store';
 
-export const API_URL = 'https://inficlic.onrender.com/api';
+export const API_URL = 'https://inficlic-1.onrender.com/api';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_URL,

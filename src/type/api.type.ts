@@ -3,6 +3,7 @@ export type LoginResponse = {
 };
 
 export type Patient = Address & {
+  id?: number
   firstName: string;
   lastName: string;
   note?: string;
@@ -31,3 +32,11 @@ export type OpenStreeMapResponse = {
     postcode?: string;
   };
 };
+
+export type Appointment = {
+  patient: Patient
+  title: string
+  startDate: number
+  endDate: number
+  note: number
+}
