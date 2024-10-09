@@ -21,10 +21,12 @@ import AddAppointmentPage from './src/pages/appointment/add_appointment_page.tsx
 import {Appointment, Patient} from './src/type/api.type.ts';
 import SelectPatientPage from './src/pages/patient/select_patient_page.tsx';
 import AppointmentDetailPage from './src/pages/appointment/appointment_detail_page.tsx';
+import RegisterPage from './src/pages/auth/register_page.tsx';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
+  Register: undefined;
   AddPatient: undefined;
   AddAppointment: {date?: Date} | undefined;
   SelectPatient: {onSelect: (patient: Patient) => void};
@@ -142,11 +144,18 @@ const MainApp = () => {
           </>
         )}
         {!userToken && (
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Login"
-            component={LoginPage}
-          />
+          <>
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="Login"
+              component={LoginPage}
+            />
+            <Stack.Screen
+              options={{title: ''}}
+              name="Register"
+              component={RegisterPage}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
