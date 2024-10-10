@@ -34,6 +34,7 @@ export type OpenStreeMapResponse = {
 };
 
 export type Appointment = {
+  id?: number;
   patient: Patient;
   title: string;
   startDate: number;

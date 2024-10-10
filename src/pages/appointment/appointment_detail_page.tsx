@@ -4,6 +4,8 @@ import {Linking, Platform, ScrollView, View} from 'react-native';
 import {Button, Text, useTheme} from 'react-native-paper';
 import {format} from 'date-fns';
 import {LeafletView} from 'react-native-leaflet-view';
+import apiClient from '../../axios/axios.ts';
+import {useState} from 'react';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AppointmentDetail'>;
 
@@ -11,6 +13,8 @@ const AppointmentDetailPage = (props: Props) => {
   const theme = useTheme();
   const appointment = props.route.params.appointment;
   const patient = appointment.patient;
+
+  const [loading, setLoading] = useState(false);
 
   const latlng = {
     lat: patient.latitude,
@@ -32,6 +36,17 @@ const AppointmentDetailPage = (props: Props) => {
     if (typeof url === 'string') {
       Linking.openURL(url);
     }
+  };
+
+  const onDelete = async () => {
+    setLoading(true);
+
+    await apiClient
+      .delete(`/appointment/delete/${appointment.id}`)
+      .catch(e => console.log(e));
+
+    setLoading(false);
+    props.navigation.replace('Home');
   };
 
   return (
@@ -82,6 +97,17 @@ const AppointmentDetailPage = (props: Props) => {
           </Button>
         </>
       )}
+      <Button
+        mode={'text'}
+        disabled={loading}
+        loading={loading}
+        buttonColor={'red'}
+        textColor={'#fff'}
+        icon={'delete'}
+        onPress={onDelete}
+        style={{marginTop: 20}}>
+        Supprimer le rendez-vous
+      </Button>
     </ScrollView>
   );
 };

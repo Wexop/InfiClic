@@ -64,6 +64,15 @@ const ProfilPage = (props: Props) => {
     getData();
   };
 
+  const onDeleteAccount = async () => {
+    setLoading(true);
+
+    await apiClient.delete('/user/delete').catch(e => console.log(e));
+
+    setLoading(false);
+    logout();
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -123,6 +132,15 @@ const ProfilPage = (props: Props) => {
       </Button>
       <Button onPress={logout} style={{marginTop: 20}}>
         Déconnexion
+      </Button>
+      <Button
+        mode={'text'}
+        buttonColor={'red'}
+        textColor={'#fff'}
+        icon={'delete'}
+        onPress={onDeleteAccount}
+        style={{marginTop: 20}}>
+        Supprimer le compte
       </Button>
     </View>
   );

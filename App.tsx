@@ -109,6 +109,7 @@ const MainApp = () => {
     headerStyle: {
       backgroundColor: theme.colors.primary,
     },
+    headerTintColor: '#fff',
     headerRight: () => <HeaderLogoutButton />,
   };
 
